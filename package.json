@@ -1,0 +1,29 @@
+{
+  "name": "react-native-window-guard",
+  "title": "React Native Window Guard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenfrvr/react-native-window-guard.git",
+    "baseUrl": "https://github.com/greenfrvr/react-native-window-guard"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Artsiom Grintsevich",
+    "email": "greenfrvr.dev@gmail.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "16.2.0",
+    "react-native": "^0.53.0"
+  }
+}
