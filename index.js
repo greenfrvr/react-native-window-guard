@@ -6,7 +6,8 @@ import {
 } from 'react-native';
 
 export const {RNWindowGuard} = NativeModules;
-const INSETS = Object.freeze(['left', 'right', 'top', 'bottom']);
+
+const WindowSides = Object.freeze(['left', 'right', 'top', 'bottom']);
 
 class WindowGuard extends React.Component {
 
@@ -15,34 +16,22 @@ class WindowGuard extends React.Component {
 
     this.state = this.initialInsets();
 
-    RNWindowGuard.requestWindowInsets()
-      .then(windowInsets => {
-        const {hasNotch, ...insets} = windowInsets;
-        WindowGuard.hasNotch = hasNotch;
-        WindowGuard.insets = insets; //need some more smart caching
-
-        console.log("Insets");
-        console.log(insets);
-        this.setState(insets);
-      });
+    this.adjustInsets();
   }
 
-  update() {
-    console.log("UPDATE CALLED");
-
+  adjustInsets() {
+    console.log("Adjust insets invoked");
     RNWindowGuard.requestWindowInsets()
       .then(windowInsets => {
         const {hasNotch, ...insets} = windowInsets;
         WindowGuard.hasNotch = hasNotch;
         WindowGuard.insets = insets; //need some more smart caching
 
-        console.log("Insets");
+        console.log("Got window insets");
         console.log(insets);
 
         this.setState(insets);
       });
-
-    // RNWindowGuard.printFlags();
   }
 
   initialInsets() {
@@ -67,12 +56,11 @@ class WindowGuard extends React.Component {
     let sizeStyle = {};
 
     if (applyInsets) {
-      INSETS.forEach(key => {
+      WindowSides.forEach(key => {
         const needsApply = applyInsets.includes(key);
         const attrKey = `padding${key.charAt(0).toUpperCase()}${key.slice(1)}`;
         const insetKey = `${key}Inset`;
-        console.log(`Needs to be applied: ${key} - ${needsApply}`);
-
+        console.log(`Inset ${needsApply ? 'will' : 'won\'t'} be applied for: ${key}`);
 
         sizeStyle[attrKey] = (needsApply && this.state[insetKey]) || style[attrKey] || 0;
       });
@@ -91,9 +79,8 @@ class WindowGuard extends React.Component {
 
   render() {
     const {style, ...props} = this.props;
-
     const adjustedStyle = this.defineStyle(StyleSheet.flatten(style || {}));
-    console.log("adjusted style");
+    
     return (
       //perhaps it also makes sense to check if view touches display boundaries before applying padding (just as it is implemented in SafeAreaView)
       <View style={adjustedStyle} {...props}/>

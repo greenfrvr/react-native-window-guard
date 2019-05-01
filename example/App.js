@@ -35,21 +35,22 @@ export default class App extends React.Component {
   toggleStatusBar = () => {
     this.statusBarHidden = !this.statusBarHidden;
     StatusBar.setHidden(this.statusBarHidden, true);
-    // RNWindowGuard.changeStatusBarVisibility(this.statusBarHidden);
-    this.container && this.container.update()
+    this.container && this.container.adjustInsets()
   };
 
+  //Android only
   toggleNavigationBar = () => {
     this.navigationBarHidden = !this.navigationBarHidden;
     RNWindowGuard.changeNavigationBarVisibility(this.navigationBarHidden);
-    this.container && this.container.update()
+    this.container && this.container.adjustInsets()
   };
 
   onLayout = (e) => {
+    //we need it only to listen orientation changes
     const {width, height} = Dimensions.get('window');
     console.log("Orientation did changed");
     console.log(width, height);
-    this.container && this.container.update()
+    this.container && this.container.adjustInsets()
   };
 
   render() {
