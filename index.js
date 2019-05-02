@@ -43,10 +43,10 @@ class WindowGuard extends React.Component {
     } = WindowGuard.insets || {};
 
     return {
-      leftInset: leftInset,
-      topInset: topInset,
-      rightInset: rightInset,
-      bottomInset: bottomInset,
+      leftInset,
+      topInset,
+      rightInset,
+      bottomInset,
     }
   }
 
@@ -62,15 +62,16 @@ class WindowGuard extends React.Component {
         const insetKey = `${key}Inset`;
         console.log(`Inset ${needsApply ? 'will' : 'won\'t'} be applied for: ${key}`);
 
-        sizeStyle[attrKey] = (needsApply && this.state[insetKey]) || style[attrKey] || 0;
+        sizeStyle[attrKey] = (needsApply && this.state[insetKey]) || 0;
+        sizeStyle[attrKey] += (style[attrKey] || 0); //here we apply padding from user defined style
       });
 
       if (style.height && typeof style.height === 'number') {
-        sizeStyle.height = style.height + sizeStyle.paddingTop + sizeStyle.paddingBottom; //??? in some cases it can be reasonable to add initial style padding
+        sizeStyle.height = style.height + sizeStyle.paddingTop + sizeStyle.paddingBottom;
       }
 
       if (style.width && typeof style.width === 'number') {
-        sizeStyle.width = style.width + sizeStyle.paddingLeft + sizeStyle.paddingRight; //??? in some cases it can be reasonable to add initial style padding
+        sizeStyle.width = style.width + sizeStyle.paddingLeft + sizeStyle.paddingRight;
       }
     }
 
