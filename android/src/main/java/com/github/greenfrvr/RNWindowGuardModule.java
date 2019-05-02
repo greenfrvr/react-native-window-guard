@@ -26,6 +26,8 @@ import static android.view.View.SYSTEM_UI_FLAG_FULLSCREEN;
 import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
@@ -59,42 +61,6 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return MODULE_NAME;
-    }
-
-    //TODO: just for debug purposes
-    @ReactMethod
-    public void changeNavigationBarVisibility(boolean visibile) {
-        int fullscreenLayout = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
-        Window window = getCurrentActivity().getWindow();
-        View decorView = window.getDecorView();
-        decorView.post(() -> {
-            if (visibile) {
-                decorView.setSystemUiVisibility(fullscreenLayout);
-            } else {
-                decorView.setSystemUiVisibility(fullscreenLayout | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            }
-        });
-    }
-
-    //TODO: just for debug purposes
-    @ReactMethod
-    public void changeStatusBarVisibility(boolean visibile) {
-        int fullscreenLayout = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
-        Window window = getCurrentActivity().getWindow();
-        View decorView = window.getDecorView();
-        decorView.post(() -> {
-            if (visibile) {
-                decorView.setSystemUiVisibility(fullscreenLayout);
-            } else {
-                decorView.setSystemUiVisibility(fullscreenLayout | SYSTEM_UI_FLAG_FULLSCREEN);
-            }
-        });
     }
 
     @ReactMethod

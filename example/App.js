@@ -7,8 +7,11 @@ import {
   Dimensions,
   StatusBar,
   TouchableOpacity,
+  NativeModules
 } from 'react-native';
 import WindowGuard, {RNWindowGuard} from 'react-native-window-guard';
+
+const {UIVisibility} = NativeModules;
 
 const mainColor = '#A5DA34';
 const title = Platform.select({
@@ -34,14 +37,18 @@ export default class App extends React.Component {
 
   toggleStatusBar = () => {
     this.statusBarHidden = !this.statusBarHidden;
-    StatusBar.setHidden(this.statusBarHidden, true);
+    if (Platform.OS === 'ios') {
+      StatusBar.setHidden(this.statusBarHidden, true);
+    } else {
+      UIVisibility.changeStatusBarVisibility(this.statusBarHidden);
+    }
     this.container && this.container.adjustInsets()
   };
 
   //Android only
   toggleNavigationBar = () => {
     this.navigationBarHidden = !this.navigationBarHidden;
-    RNWindowGuard.changeNavigationBarVisibility(this.navigationBarHidden);
+    UIVisibility.changeNavigationBarVisibility(this.navigationBarHidden);
     this.container && this.container.adjustInsets()
   };
 
