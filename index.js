@@ -81,7 +81,9 @@ class WindowGuard extends React.Component {
   render() {
     const {style, ...props} = this.props;
     const adjustedStyle = this.defineStyle(StyleSheet.flatten(style || {}));
-    
+    console.log("Adjustd Style");
+    console.log(adjustedStyle);
+
     return (
       //perhaps it also makes sense to check if view touches display boundaries before applying padding (just as it is implemented in SafeAreaView)
       <View style={adjustedStyle} {...props}/>

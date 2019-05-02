@@ -4,9 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Dimensions,
-  StatusBar
+  StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import WindowGuard, {RNWindowGuard} from 'react-native-window-guard';
 
@@ -66,18 +66,19 @@ export default class App extends React.Component {
             <Text style={styles.subtitle}>{subtitle}</Text>
           </View>
           <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{marginBottom: 20}}>
-              <Button
+            <View style={{marginBottom: 8}}>
+              <TouchableOpacity
                 style={styles.button}
-                title={'Toggle status bar'}
-                color={mainColor}
-                onPress={this.toggleStatusBar}/>
+                onPress={this.toggleStatusBar}>
+                <Text style={styles.buttonTitle}>Toggle status bar</Text>
+              </TouchableOpacity>
             </View>
             {Platform.OS === 'android' &&
-            <Button
-              title={'Toggle navigation bar'}
-              color={mainColor}
-              onPress={this.toggleNavigationBar}/>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.toggleNavigationBar}>
+              <Text style={styles.buttonTitle}>Toggle navigation bar</Text>
+            </TouchableOpacity>
             }
           </View>
         </View>
@@ -99,6 +100,15 @@ const styles = StyleSheet.create({
       android: 43,
     }),
     textAlign: 'center',
+    fontFamily: 'DIN Alternate',
+    color: mainColor
+  },
+  button: {
+    paddingHorizontal: 16,
+    paddingVertical: 8
+  },
+  buttonTitle: {
+    fontSize: 16,
     fontFamily: 'DIN Alternate',
     color: mainColor
   },

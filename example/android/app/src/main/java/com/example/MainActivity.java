@@ -35,6 +35,12 @@ public class MainActivity extends ReactActivity {
         uiOptions |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
         uiOptions |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         uiOptions |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            uiOptions |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            uiOptions |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        }
+
 //
 //        uiOptions |= View.SYSTEM_UI_FLAG_FULLSCREEN;
 //        uiOptions |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
