@@ -1,1 +1,6 @@
+.idea
 example
+node_modules
+android/build
+xcuserdata
+*.iml
