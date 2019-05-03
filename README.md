@@ -4,10 +4,10 @@ Project represents simple way to handle notches and system ui decorations for Re
 
 <div class="row">
   <div class="column">
-    <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_android.png" width=250/>
+    <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_android.png" height=400/>
   </div>
   <div class="column">
-    <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_ios.png" width=250/>
+    <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_ios.png" height=400/>
   </div>
 </div>
 
