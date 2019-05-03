@@ -1,5 +1,9 @@
 # react-native-window-guard
 
+[![npm package](https://img.shields.io/github/package-json/v/greenfrvr/react-native-window-guard.svg)](https://www.npmjs.com/package/react-native-window-guard)
+[![license](https://img.shields.io/github/license/greenfrvr/react-native-window-guard.svg)](https://github.com/greenfrvr/react-native-window-guard/blob/master/LICENSE)
+
+
 Project represents simple way to handle notches and system ui decorations for React Native. In comparison to alternatives (e.g. `SafeAreaView`) it works on both iOS and Android and doesn't use hardcoded values, getting all insets with operating system APIs instead.
 
 Android             |  iOS
