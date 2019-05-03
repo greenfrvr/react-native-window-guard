@@ -2,14 +2,9 @@
 
 Project represents simple way to handle notches and system ui decorations for React Native. In comparison to alternatives (e.g. `SafeAreaView`) it works on both iOS and Android and doesn't use hardcoded values, getting all insets with operating system APIs instead.
 
-<div class="row">
-  <div class="column">
-    <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_android.png" height=400/>
-  </div>
-  <div class="column">
-    <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_ios.png" height=400/>
-  </div>
-</div>
+Android             |  iOS
+:-------------------------:|:-------------------------:
+<img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_android.png" height=400/>  |  <img src="https://github.com/greenfrvr/react-native-window-guard/blob/master/example/snapshot_ios.png" height=400/>
 
 ## Getting started
 
