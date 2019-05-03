@@ -28,7 +28,7 @@ class WindowGuard extends React.Component {
         WindowGuard.insets = insets; //need some more smart caching
 
         console.log("Got window insets");
-        console.log(insets);
+        console.log(windowInsets);
 
         this.setState(insets);
       });
@@ -63,7 +63,7 @@ class WindowGuard extends React.Component {
         console.log(`Inset ${needsApply ? 'will' : 'won\'t'} be applied for: ${key}`);
 
         sizeStyle[attrKey] = (needsApply && this.state[insetKey]) || 0;
-        sizeStyle[attrKey] += (style[attrKey] || 0); //here we apply padding from user defined style
+        sizeStyle[attrKey] += style[attrKey] || 0; //here we apply padding from user defined style
       });
 
       if (style.height && typeof style.height === 'number') {
@@ -81,7 +81,7 @@ class WindowGuard extends React.Component {
   render() {
     const {style, ...props} = this.props;
     const adjustedStyle = this.defineStyle(StyleSheet.flatten(style || {}));
-    console.log("Adjustd Style");
+    console.log("Adjusted Style");
     console.log(adjustedStyle);
 
     return (

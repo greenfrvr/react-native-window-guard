@@ -124,8 +124,8 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
             isLayoutUnderNavigationBar = isLayoutUnderNavigationBar || (windowOptions & FLAG_TRANSLUCENT_NAVIGATION) != 0;
         }
 
-        Log.d(TAG, "=== Is navigation bar hidden: " + isNavigationBarHidden);
-        Log.d(TAG, "=== Is content below navigation bar: " + isLayoutUnderNavigationBar);
+        Log.d(TAG, "===== Is navigation bar hidden: " + isNavigationBarHidden);
+        Log.d(TAG, "===== Is content below navigation bar: " + isLayoutUnderNavigationBar);
 
         if (isLayoutUnderNavigationBar && !isNavigationBarHidden) {
             map.putDouble(LEFT, pxToDp(insets.getSystemWindowInsetLeft()));
