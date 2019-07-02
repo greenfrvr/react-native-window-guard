@@ -65,7 +65,7 @@ export default class App extends React.Component {
       <WindowGuard
         ref={r => this.container = r}
         style={{flex: 1}}
-        applyInsets={['top', 'bottom', 'left', 'right']}
+        applyInsets={WindowGuard.all}
         onLayout={this.onLayout}>
         <View style={styles.container}>
           <View style={{flex: 5, alignItems: 'center', justifyContent: 'center'}}>

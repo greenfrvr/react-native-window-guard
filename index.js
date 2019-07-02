@@ -8,8 +8,45 @@ import {
 export const {RNWindowGuard} = NativeModules;
 
 const WindowSides = Object.freeze(['left', 'right', 'top', 'bottom']);
+const WindowSidesConfig = Object.freeze({
+  'left': ['left'],
+  'right': ['right'],
+  'top': ['top'],
+  'bottom': ['bottom'],
+  'horizontal': ['left', 'right'],
+  'vertical': ['top', 'bottom'],
+  'all': ['left', 'top', 'right', 'bottom'],
+});
 
-class WindowGuard extends React.Component {
+class WindowGuard extends React.PureComponent {
+
+  static get left() {
+    return WindowSidesConfig.left;
+  }
+
+  static get right() {
+    return WindowSidesConfig.right;
+  }
+
+  static get top() {
+    return WindowSidesConfig.top;
+  }
+
+  static get bottom() {
+    return WindowSidesConfig.bottom;
+  }
+
+  static get horizontal() {
+    return WindowSidesConfig.horizontal;
+  }
+
+  static get vertical() {
+    return WindowSidesConfig.vertical;
+  }
+
+  static get all() {
+    return WindowSidesConfig.all;
+  }
 
   constructor(props) {
     super(props);

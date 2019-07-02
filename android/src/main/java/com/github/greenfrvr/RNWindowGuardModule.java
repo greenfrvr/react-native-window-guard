@@ -71,19 +71,11 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
 
         Window window = getCurrentActivity().getWindow();
         View view = window.getDecorView().getRootView();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            android.view.WindowInsets insets = view.getRootWindowInsets();
-//            if (insets != null) {
-//                Log.i(TAG, "requestWindowInsets: " + insets.getSystemWindowInsetTop());
-//            }
-//        }
 
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
             int uiOptions = getCurrentActivity().getWindow().getDecorView().getSystemUiVisibility();
             int windowOptions = getCurrentActivity().getWindow().getAttributes().flags;
             WritableMap insetsMap = convertToWindowInsetsMap(insets, uiOptions, windowOptions);
-            Log.i(TAG, "===== Apply Window Insets: " + insetsMap);
-            printInsets(insets);
             promise.resolve(insetsMap);
             return insets.consumeSystemWindowInsets();
         });
@@ -91,7 +83,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
         view.post(() -> ViewCompat.requestApplyInsets(view));
     }
 
-    WritableMap convertToWindowInsetsMap(WindowInsetsCompat insets, int uiOptions, int windowOptions) {
+    private WritableMap convertToWindowInsetsMap(WindowInsetsCompat insets, int uiOptions, int windowOptions) {
         WritableMap map = createEmptyInsetsMap();
 
         applyStatusBarVisibility(map, insets, uiOptions, windowOptions);
@@ -102,7 +94,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
         return map;
     }
 
-    void applyStatusBarVisibility(WritableMap map, WindowInsetsCompat insets, int uiOptions, int windowOptions) {
+    private void applyStatusBarVisibility(WritableMap map, WindowInsetsCompat insets, int uiOptions, int windowOptions) {
         boolean isStatusBarHidden = (windowOptions & FLAG_FULLSCREEN) != 0 || (uiOptions & SYSTEM_UI_FLAG_FULLSCREEN) != 0;
         boolean isLayoutUnderStatusBar = (uiOptions & SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -117,7 +109,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
         }
     }
 
-    void applyNavigationBarVisibility(WritableMap map, WindowInsetsCompat insets, int uiOptions, int windowOptions) {
+    private void applyNavigationBarVisibility(WritableMap map, WindowInsetsCompat insets, int uiOptions, int windowOptions) {
         boolean isNavigationBarHidden = (uiOptions & SYSTEM_UI_FLAG_HIDE_NAVIGATION) != 0;
         boolean isLayoutUnderNavigationBar = (uiOptions & SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) != 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -134,7 +126,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
         }
     }
 
-    void adjustWindowInsetsWithCutout(WritableMap map, DisplayCutoutCompat displayCutout) {
+    private void adjustWindowInsetsWithCutout(WritableMap map, DisplayCutoutCompat displayCutout) {
         map.putBoolean(NOTCH, displayCutout != null);
         if (displayCutout != null) {
             if (map.getDouble(LEFT) == 0 && displayCutout.getSafeInsetLeft() != 0) {
@@ -157,7 +149,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
         }
     }
 
-    WritableMap createEmptyInsetsMap() {
+    private WritableMap createEmptyInsetsMap() {
         WritableMap map = Arguments.createMap();
         map.putDouble(LEFT, 0);
         map.putDouble(TOP, 0);
@@ -166,7 +158,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
         return map;
     }
 
-    float pxToDp(float px) {
+    private float pxToDp(float px) {
         return px / density;
     }
 
