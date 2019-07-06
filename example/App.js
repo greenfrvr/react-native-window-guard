@@ -4,24 +4,17 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
   StatusBar,
   TouchableOpacity,
   NativeModules
 } from 'react-native';
-import WindowGuard, {RNWindowGuard} from 'react-native-window-guard';
+import WindowGuard from 'react-native-window-guard';
 
 const {UIVisibility} = NativeModules;
 
 const mainColor = '#A5DA34';
-const title = Platform.select({
-  ios: 'IOS',
-  android: 'ANDROID',
-});
-const subtitle = Platform.select({
-  ios: 'Safe Area',
-  android: 'Window Insets',
-});
+const title = Platform.select({ios: 'IOS', android: 'ANDROID'});
+const subtitle = Platform.select({ios: 'Safe Area', android: 'Window Insets'});
 
 export default class App extends React.Component {
 
@@ -52,21 +45,12 @@ export default class App extends React.Component {
     this.container && this.container.adjustInsets()
   };
 
-  onLayout = (e) => {
-    //we need it only to listen orientation changes
-    const {width, height} = Dimensions.get('window');
-    console.log("Orientation did changed");
-    console.log(width, height);
-    this.container && this.container.adjustInsets()
-  };
-
   render() {
     return (
       <WindowGuard
         ref={r => this.container = r}
         style={{flex: 1}}
-        applyInsets={WindowGuard.all}
-        onLayout={this.onLayout}>
+        applyInsets={WindowGuard.all}>
         <View style={styles.container}>
           <View style={{flex: 5, alignItems: 'center', justifyContent: 'center'}}>
             <Text style={styles.title}>{title}</Text>

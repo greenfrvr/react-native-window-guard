@@ -7,6 +7,7 @@ import {
 
 export const {RNWindowGuard} = NativeModules;
 
+const Orientation = Object.freeze({'vertical': 1, 'horizontal': 2});
 const WindowSides = Object.freeze(['left', 'right', 'top', 'bottom']);
 const WindowSidesConfig = Object.freeze({
   'left': ['left'],
@@ -51,9 +52,26 @@ class WindowGuard extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = this.initialInsets();
+    this.state = this.initialState();
 
     this.adjustInsets();
+  }
+
+  initialState() {
+    const {
+      leftInset = 0,
+      topInset = 0,
+      rightInset = 0,
+      bottomInset = 0
+    } = WindowGuard.insets || {};
+
+    return {
+      leftInset,
+      topInset,
+      rightInset,
+      bottomInset,
+      orientation: Orientation.vertical
+    }
   }
 
   adjustInsets() {
@@ -71,21 +89,12 @@ class WindowGuard extends React.PureComponent {
       });
   }
 
-  initialInsets() {
-    const {
-      leftInset = 0,
-      topInset = 0,
-      rightInset = 0,
-      bottomInset = 0
-    } = WindowGuard.insets || {};
-
-    return {
-      leftInset,
-      topInset,
-      rightInset,
-      bottomInset,
+  onLayout = ({nativeEvent: {layout: {x, y, width, height}}}) => {
+    const orientation = width > height ? Orientation.horizontal : Orientation.vertical;
+    if (orientation !== this.state.orientation) {
+      this.setState({orientation}, () => this.adjustInsets())
     }
-  }
+  };
 
   defineStyle = (style) => {
     const {applyInsets} = this.props;
@@ -123,7 +132,7 @@ class WindowGuard extends React.PureComponent {
 
     return (
       //perhaps it also makes sense to check if view touches display boundaries before applying padding (just as it is implemented in SafeAreaView)
-      <View style={adjustedStyle} {...props}/>
+      <View {...props} style={adjustedStyle} onLayout={this.onLayout}/>
     )
   }
 }
