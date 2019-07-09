@@ -3,6 +3,10 @@ import UIKit
 @objc(RNWindowGuard)
 class RNWindowGuard: NSObject {
     
+    @objc static func requiresMainQueueSetup() -> Bool {
+        return true
+    }
+    
     @objc
     func requestWindowInsets(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
         if let insets = extractInsets() {
