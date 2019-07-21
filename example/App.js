@@ -8,9 +8,10 @@ import {
   TouchableOpacity,
   NativeModules
 } from 'react-native';
-import WindowGuard from 'react-native-window-guard';
+import WindowGuard, {withWindowGuard} from 'react-native-window-guard';
 
 const {UIVisibility} = NativeModules;
+const GuardedView = withWindowGuard(View, WindowGuard.all);
 
 const mainColor = '#A5DA34';
 const title = Platform.select({ios: 'IOS', android: 'ANDROID'});
@@ -60,25 +61,22 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <WindowGuard
+      <GuardedView
         ref={r => this.container = r}
-        style={{flex: 1}}
-        applyInsets={WindowGuard.all}>
-        <View style={styles.container}>
-          <View style={styles.topContainer}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{subtitle}</Text>
-          </View>
-          <View style={styles.bottomContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.toggleStatusBar}>
-              <Text style={styles.buttonTitle}>{toggleStatusBar}</Text>
-            </TouchableOpacity>
-            {this.navigationBarButton()}
-          </View>
+        style={styles.container}>
+        <View style={styles.topContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-      </WindowGuard>
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.toggleStatusBar}>
+            <Text style={styles.buttonTitle}>{toggleStatusBar}</Text>
+          </TouchableOpacity>
+          {this.navigationBarButton()}
+        </View>
+      </GuardedView>
     );
   }
 }

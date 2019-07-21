@@ -188,4 +188,23 @@ WindowGuard.requestWindowInsets = () => {
     });
 };
 
+export function withWindowGuard(WrappedComponent, inset = WindowGuard.top) {
+  return class extends React.PureComponent {
+    render() {
+      const {guardStyle, ...props} = this.props;
+      return (
+        <WindowGuard style={[styles.container, guardStyle]} applyInsets={inset}>
+          <WrappedComponent {...props}/>
+        </WindowGuard>
+      );
+    }
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
+
 export default WindowGuard;
