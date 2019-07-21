@@ -45,9 +45,20 @@ Android             |  iOS
 
 
 ## Usage
-Put your layout inside `WindowGuard` component and define which insets you want to be applied. For this use `applyInsets` prop. It takes array with sides which should be affected with insets. Available values: `top`, `bottom`, `left`, `right`. After this relevant window insets will be requested from native and applied as paddings to `WindowGuard` component. 
+Put your layout inside `WindowGuard` component and define which insets you want to be applied. To make this use `applyInsets` prop. It takes array with sides which should be affected with insets. Available values: `top`, `bottom`, `left`, `right`. After this relevant window insets will be requested from native and applied as paddings to `WindowGuard` component. 
+
+For convenience and better perfomance there are serveral insets configurations that are predefined. They are defined statically in `WindowGuard`. Available predefined insets configurations are: 
+- `left`
+- `right`
+- `top`
+- `bottom`
+- `vertical`
+- `horizontal`
+- `all`
+
+Below is an example of applying insets both for top and bottom sides of your content: 
+
 ```javascript
-//...some other imports
 import WindowGuard from 'react-native-window-guard';
 
 export default class App extends React.Component {
@@ -59,16 +70,47 @@ export default class App extends React.Component {
   render() {
     return (
       <WindowGuard
-        ref={r => this.container = r}
         style={{flex: 1}}
-        applyInsets={['top', 'bottom', 'left', 'right']}
-        >
+        applyInsets={WindowGuard.vertical}>
         //content
       </WindowGuard>
     );
   }
 }
 ```
-Notice that you can still add paddings to `WindowGuard` and they will be added to applied window insets. Currently `paddingHorizontal` and `paddingVertical` are not supported, so padding should be defined explicitly.
+Notice that you can still add paddings to `WindowGuard` and they will be added to applied window insets. Currently all paddings definitions are supported includeing `paddingHorizontal`, `paddingVertical` and `padding` attributes.
 
-Also for better perfomance you may want to call `WindowGuard.requestWindowInsets()`. For now it's needed due to async calls to native code, so React Native needs some time to deliver inset values.
+## Dynamic changes
+
+Window guard will handle orientation changes and apply new relevant insets automatically for you. Unfortunately there are still cases where you need to handle some ui changes manually. For example hiding status bar. You can request window guard to refresh insets after configuation change by calling `adjustInsets` method. Below is small usage example:
+
+ ```javascript
+import WindowGuard from 'react-native-window-guard';
+
+export default class App extends React.Component {
+
+  toggleStatusBar = () => {
+    //change statusBarHidden state
+    StatusBar.setHidden(statusBarHidden, true);       //change system ui views state
+    this.container && this.container.adjustInsets()   //request to refresh insets values
+  };
+
+  render() {
+    return (
+      <WindowGuard
+        ref={r => this.container = r}
+        style={{flex: 1}}
+        applyInsets={WindowGuard.all}>
+        //content
+      </WindowGuard>
+    );
+  }
+}
+```
+
+## HOC 
+For convenience there is HOC wich will simplify `WindowGuard` usage. `withWindowGuard` HOC will return component wrapped into `WindowGuard` with defined insets configuration. For example 
+
+`const GuardedView = withWindowGuard(View, WindowGuard.all)`
+
+will return `View` component wrapped into `WindowGuard` with insets applied to all sides.
