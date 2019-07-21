@@ -15,6 +15,8 @@ const {UIVisibility} = NativeModules;
 const mainColor = '#A5DA34';
 const title = Platform.select({ios: 'IOS', android: 'ANDROID'});
 const subtitle = Platform.select({ios: 'Safe Area', android: 'Window Insets'});
+const toggleStatusBar = 'Toggle status bar';
+const toggleNavigationBar = 'Toggle navigation bar';
 
 export default class App extends React.Component {
 
@@ -45,6 +47,17 @@ export default class App extends React.Component {
     this.container && this.container.adjustInsets()
   };
 
+  navigationBarButton = () => {
+    return (Platform.OS === 'android' &&
+      <View style={styles.navigationButton}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.toggleNavigationBar}>
+          <Text style={styles.buttonTitle}>{toggleNavigationBar}</Text>
+        </TouchableOpacity>
+      </View>);
+  };
+
   render() {
     return (
       <WindowGuard
@@ -52,25 +65,17 @@ export default class App extends React.Component {
         style={{flex: 1}}
         applyInsets={WindowGuard.all}>
         <View style={styles.container}>
-          <View style={{flex: 5, alignItems: 'center', justifyContent: 'center'}}>
+          <View style={styles.topContainer}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>{subtitle}</Text>
           </View>
-          <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{marginBottom: 8}}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={this.toggleStatusBar}>
-                <Text style={styles.buttonTitle}>Toggle status bar</Text>
-              </TouchableOpacity>
-            </View>
-            {Platform.OS === 'android' &&
+          <View style={styles.bottomContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={this.toggleNavigationBar}>
-              <Text style={styles.buttonTitle}>Toggle navigation bar</Text>
+              onPress={this.toggleStatusBar}>
+              <Text style={styles.buttonTitle}>{toggleStatusBar}</Text>
             </TouchableOpacity>
-            }
+            {this.navigationBarButton()}
           </View>
         </View>
       </WindowGuard>
@@ -85,6 +90,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#222222',
   },
+  topContainer: {
+    flex: 5,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bottomContainer: {
+    flex: 4,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   title: {
     fontSize: Platform.select({
       ios: 84,
@@ -97,6 +112,9 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 16,
     paddingVertical: 8
+  },
+  navigationButton: {
+    marginTop: 8
   },
   buttonTitle: {
     fontSize: 16,
