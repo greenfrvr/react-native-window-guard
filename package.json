@@ -1,7 +1,7 @@
 {
   "name": "react-native-window-guard",
   "title": "React Native Window Guard",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
