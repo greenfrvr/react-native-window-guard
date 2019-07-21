@@ -18,8 +18,10 @@ class RNWindowGuard: NSObject {
         var insets: [String: Any]? = nil
         DispatchQueue.main.sync {
             if #available(iOS 11.0, *) {
-                if let window = UIApplication.shared.keyWindow {
+                if let window = UIApplication.shared.keyWindow, !window.safeAreaInsets.isZero {
                     insets = self.convertToWindowInsetsMap(insets: window.safeAreaInsets)
+                } else {
+                    insets = self.convertToWindowInsetsMap(statusBarFrame: UIApplication.shared.statusBarFrame)
                 }
             } else {
                 insets = self.convertToWindowInsetsMap(statusBarFrame: UIApplication.shared.statusBarFrame)
@@ -40,8 +42,6 @@ class RNWindowGuard: NSObject {
     }
     
     private func convertToWindowInsetsMap(statusBarFrame frame: CGRect) -> [String: Any] {
-        //TODO: we need to calculate inset for different orientation configuration based on status bar frame
-        //currently app is used only in portrait orientation so such implementation is enough
         return [
             "leftInset": 0,
             "rightInset": 0,
@@ -51,4 +51,10 @@ class RNWindowGuard: NSObject {
         ]
     }
     
+}
+
+private extension UIEdgeInsets {
+    var isZero: Bool {
+        return left == 0 && right == 0 && top == 0 && bottom == 0
+    }
 }
