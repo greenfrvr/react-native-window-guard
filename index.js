@@ -8,7 +8,28 @@ import {
 export const {RNWindowGuard} = NativeModules;
 
 const Orientation = Object.freeze({'vertical': 1, 'horizontal': 2});
-const WindowSides = Object.freeze(['left', 'right', 'top', 'bottom']);
+const WindowSides = Object.freeze([
+  {
+    key: 'left',
+    insetKey: 'leftInset',
+    attrKey: 'paddingLeft'
+  },
+  {
+    key: 'right',
+    insetKey: 'rightInset',
+    attrKey: 'paddingRight'
+  },
+  {
+    key: 'top',
+    insetKey: 'topInset',
+    attrKey: 'paddingTop'
+  },
+  {
+    key: 'bottom',
+    insetKey: 'bottomInset',
+    attrKey: 'paddingBottom'
+  }
+]);
 const WindowSidesConfig = Object.freeze({
   'left': ['left'],
   'right': ['right'],
@@ -96,20 +117,40 @@ class WindowGuard extends React.PureComponent {
     }
   };
 
-  defineStyle = (style) => {
-    const {applyInsets} = this.props;
+  rearrangeStyle = (style) => {
+    if (style.hasOwnProperty('padding')) {
+      style.paddingTop = style.padding;
+      style.paddingBottom = style.padding;
+      style.paddingLeft = style.padding;
+      style.paddingRight = style.padding;
+      delete style.padding
+    }
 
-    let sizeStyle = {};
+    if (style.hasOwnProperty('paddingVertical')) {
+      style.paddingTop = style.paddingVertical;
+      style.paddingBottom = style.paddingVertical;
+      delete style.paddingVertical;
+    }
+
+    if (style.hasOwnProperty('paddingHorizontal')) {
+      style.paddingLeft = style.paddingHorizontal;
+      style.paddingRight = style.paddingHorizontal;
+      delete style.paddingHorizontal;
+    }
+    return style
+  };
+
+  defineStyle = (s) => {
+    const {applyInsets} = this.props;
+    const style = this.rearrangeStyle(s);
+    const sizeStyle = {};
 
     if (applyInsets) {
-      WindowSides.forEach(key => {
-        const needsApply = applyInsets.includes(key);
-        const attrKey = `padding${key.charAt(0).toUpperCase()}${key.slice(1)}`;
-        const insetKey = `${key}Inset`;
-        console.log(`Inset ${needsApply ? 'will' : 'won\'t'} be applied for: ${key}`);
-
-        sizeStyle[attrKey] = (needsApply && this.state[insetKey]) || 0;
+      WindowSides.forEach(insetConfig => {
+        const {key, attrKey, insetKey} = insetConfig;
+        sizeStyle[attrKey] = (applyInsets.includes(key) && this.state[insetKey]) || 0;
         sizeStyle[attrKey] += style[attrKey] || 0; //here we apply padding from user defined style
+        console.log(`Inset ${applyInsets.includes(key) ? 'will' : 'won\'t'} be applied for: ${key}`);
       });
 
       if (style.height && typeof style.height === 'number') {
