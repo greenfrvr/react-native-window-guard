@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11BDCD122278198700487329 /* RNWindowGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107A39D2276D81500FB0B72 /* RNWindowGuard.swift */; };
+		11C42B61230AE05A009D5C00 /* RNWindowGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1107A39D2276D81500FB0B72 /* RNWindowGuard.swift */; };
 		B3E7B58A1CC2AC0600A0062D /* RNWindowGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNWindowGuard.m */; };
 /* End PBXBuildFile section */
 
@@ -117,7 +117,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3E7B58A1CC2AC0600A0062D /* RNWindowGuard.m in Sources */,
-				11BDCD122278198700487329 /* RNWindowGuard.swift in Sources */,
+				11C42B61230AE05A009D5C00 /* RNWindowGuard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

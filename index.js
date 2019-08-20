@@ -5,9 +5,12 @@ import {
   NativeModules,
 } from 'react-native';
 
-export const {RNWindowGuard} = NativeModules;
+export const { RNWindowGuard } = NativeModules;
 
-const Orientation = Object.freeze({'vertical': 1, 'horizontal': 2});
+const Orientation = Object.freeze({
+  'vertical': 1,
+  'horizontal': 2
+});
 const WindowSides = Object.freeze([
   {
     key: 'left',
@@ -92,28 +95,26 @@ class WindowGuard extends React.PureComponent {
       rightInset,
       bottomInset,
       orientation: Orientation.vertical
-    }
+    };
   }
 
   adjustInsets() {
-    console.log("Adjust insets invoked");
     RNWindowGuard.requestWindowInsets()
       .then(windowInsets => {
-        const {hasNotch, ...insets} = windowInsets;
+        const { hasNotch, ...insets } = windowInsets;
         WindowGuard.hasNotch = hasNotch;
         WindowGuard.insets = insets; //need some more smart caching
 
-        console.log("Got window insets");
-        console.log(windowInsets);
-
-        this.setState(insets);
+        this.setState(insets, () => {
+          this.props.onInsetsChange && this.props.onInsetsChange(insets, hasNotch);
+        });
       });
   }
 
-  onLayout = ({nativeEvent: {layout: {x, y, width, height}}}) => {
+  onLayout = ({ nativeEvent: { layout: { x, y, width, height } } }) => {
     const orientation = width > height ? Orientation.horizontal : Orientation.vertical;
     if (orientation !== this.state.orientation) {
-      this.setState({orientation}, () => this.adjustInsets())
+      this.setState({ orientation }, () => this.adjustInsets());
     }
   };
 
@@ -123,7 +124,7 @@ class WindowGuard extends React.PureComponent {
       style.paddingBottom = style.padding;
       style.paddingLeft = style.padding;
       style.paddingRight = style.padding;
-      delete style.padding
+      delete style.padding;
     }
 
     if (style.hasOwnProperty('paddingVertical')) {
@@ -137,20 +138,19 @@ class WindowGuard extends React.PureComponent {
       style.paddingRight = style.paddingHorizontal;
       delete style.paddingHorizontal;
     }
-    return style
+    return style;
   };
 
   defineStyle = (s) => {
-    const {applyInsets} = this.props;
+    const { applyInsets } = this.props;
     const style = this.rearrangeStyle(s);
     const sizeStyle = {};
 
     if (applyInsets) {
       WindowSides.forEach(insetConfig => {
-        const {key, attrKey, insetKey} = insetConfig;
+        const { key, attrKey, insetKey } = insetConfig;
         sizeStyle[attrKey] = (applyInsets.includes(key) && this.state[insetKey]) || 0;
         sizeStyle[attrKey] += style[attrKey] || 0; //here we apply padding from user defined style
-        console.log(`Inset ${applyInsets.includes(key) ? 'will' : 'won\'t'} be applied for: ${key}`);
       });
 
       if (style.height && typeof style.height === 'number') {
@@ -162,19 +162,16 @@ class WindowGuard extends React.PureComponent {
       }
     }
 
-    return Object.assign({}, style, sizeStyle)
+    return Object.assign({}, style, sizeStyle);
   };
 
   render() {
-    const {style, ...props} = this.props;
+    const { style, ...props } = this.props;
     const adjustedStyle = this.defineStyle(StyleSheet.flatten(style || {}));
-    console.log("Adjusted Style");
-    console.log(adjustedStyle);
-
     return (
       //perhaps it also makes sense to check if view touches display boundaries before applying padding (just as it is implemented in SafeAreaView)
-      <View {...props} style={adjustedStyle} onLayout={this.onLayout}/>
-    )
+      <View {...props} style={adjustedStyle} onLayout={this.onLayout} />
+    );
   }
 }
 
@@ -182,7 +179,7 @@ class WindowGuard extends React.PureComponent {
 WindowGuard.requestWindowInsets = () => {
   RNWindowGuard.requestWindowInsets()
     .then(windowInsets => {
-      const {hasNotch, ...insets} = windowInsets;
+      const { hasNotch, ...insets } = windowInsets;
       WindowGuard.hasNotch = hasNotch;
       WindowGuard.insets = insets;
     });
@@ -191,14 +188,14 @@ WindowGuard.requestWindowInsets = () => {
 export function withWindowGuard(WrappedComponent, inset = WindowGuard.top) {
   return class extends React.PureComponent {
     render() {
-      const {guardStyle, ...props} = this.props;
+      const { guardStyle, ...props } = this.props;
       return (
         <WindowGuard style={[styles.container, guardStyle]} applyInsets={inset}>
-          <WrappedComponent {...props}/>
+          <WrappedComponent {...props} />
         </WindowGuard>
       );
     }
-  }
+  };
 }
 
 const styles = StyleSheet.create({

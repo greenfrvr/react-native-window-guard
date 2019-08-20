@@ -1,7 +1,7 @@
 import UIKit
 
 @objc(RNWindowGuard)
-class RNWindowGuard: NSObject {
+public class RNWindowGuard: NSObject {
     
     @objc static func requiresMainQueueSetup() -> Bool {
         return true
