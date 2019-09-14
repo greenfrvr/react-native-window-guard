@@ -23,6 +23,8 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
+    this.container = React.createRef();
+
     this.statusBarHidden = false;
     this.navigationBarHidden = true;
   }
@@ -38,14 +40,14 @@ export default class App extends React.Component {
     } else {
       UIVisibility.changeStatusBarVisibility(this.statusBarHidden);
     }
-    this.container && this.container.adjustInsets()
+    this.container.current.adjustInsets()
   };
 
   //Android only
   toggleNavigationBar = () => {
     this.navigationBarHidden = !this.navigationBarHidden;
     UIVisibility.changeNavigationBarVisibility(this.navigationBarHidden);
-    this.container && this.container.adjustInsets()
+    this.container.current.adjustInsets()
   };
 
   navigationBarButton = () => {
@@ -62,7 +64,7 @@ export default class App extends React.Component {
   render() {
     return (
       <GuardedView
-        ref={r => this.container = r}
+        ref={this.container}
         style={styles.container}>
         <View style={styles.topContainer}>
           <Text style={styles.title}>{title}</Text>
