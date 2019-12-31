@@ -2,7 +2,7 @@
   "name": "react-native-window-guard",
   "title": "React Native Window Guard",
   "version": "1.0.2",
-  "description": "",
+  "description": "SafeAreaView alternative for React Native which provides relevant window insets for both iOS and Android.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
