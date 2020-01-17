@@ -26,9 +26,8 @@ import static android.view.View.SYSTEM_UI_FLAG_FULLSCREEN;
 import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -96,7 +95,7 @@ public class RNWindowGuardModule extends ReactContextBaseJavaModule {
 
     private void applyStatusBarVisibility(WritableMap map, WindowInsetsCompat insets, int uiOptions, int windowOptions) {
         boolean isStatusBarHidden = (windowOptions & FLAG_FULLSCREEN) != 0 || (uiOptions & SYSTEM_UI_FLAG_FULLSCREEN) != 0;
-        boolean isLayoutUnderStatusBar = (uiOptions & SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0;
+        boolean isLayoutUnderStatusBar = (uiOptions & SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0 || (windowOptions & FLAG_LAYOUT_IN_SCREEN) != 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             isLayoutUnderStatusBar = isLayoutUnderStatusBar || (windowOptions & FLAG_TRANSLUCENT_STATUS) != 0;
         }
