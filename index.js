@@ -5,7 +5,7 @@ import {
   NativeModules,
 } from 'react-native';
 
-export const {RNWindowGuard} = NativeModules;
+export const { RNWindowGuard } = NativeModules;
 
 const Orientation = Object.freeze({
   'vertical': 1,
@@ -101,7 +101,7 @@ class WindowGuard extends React.PureComponent {
   adjustInsets() {
     RNWindowGuard.requestWindowInsets()
       .then(windowInsets => {
-        const {hasNotch, ...insets} = windowInsets;
+        const { hasNotch, ...insets } = windowInsets;
         WindowGuard.hasNotch = hasNotch;
         WindowGuard.insets = insets; //need some more smart caching
 
@@ -111,11 +111,14 @@ class WindowGuard extends React.PureComponent {
       });
   }
 
-  onLayout = ({nativeEvent: {layout: {x, y, width, height}}}) => {
+  onLayout = (e) => {
+    const { width, height } = e.nativeEvent.layout;
     const orientation = width > height ? Orientation.horizontal : Orientation.vertical;
     if (orientation !== this.state.orientation) {
-      this.setState({orientation}, () => this.adjustInsets());
+      this.setState({ orientation }, () => this.adjustInsets());
     }
+
+    this.props.onLayout && this.props.onLayout(e);
   };
 
   rearrangeStyle = (style) => {
@@ -142,13 +145,13 @@ class WindowGuard extends React.PureComponent {
   };
 
   defineStyle = (s) => {
-    const {applyInsets} = this.props;
+    const { applyInsets } = this.props;
     const style = this.rearrangeStyle(s);
     const sizeStyle = {};
 
     if (applyInsets) {
       WindowSides.forEach(insetConfig => {
-        const {key, attrKey, insetKey} = insetConfig;
+        const { key, attrKey, insetKey } = insetConfig;
         sizeStyle[attrKey] = (applyInsets.includes(key) && this.state[insetKey]) || 0;
         sizeStyle[attrKey] += style[attrKey] || 0; //here we apply padding from user defined style
       });
@@ -166,11 +169,11 @@ class WindowGuard extends React.PureComponent {
   };
 
   render() {
-    const {style, ...props} = this.props;
+    const { style, ...props } = this.props;
     const adjustedStyle = this.defineStyle(StyleSheet.flatten(style || {}));
     return (
       //perhaps it also makes sense to check if view touches display boundaries before applying padding (just as it is implemented in SafeAreaView)
-      <View {...props} style={adjustedStyle} onLayout={this.onLayout}/>
+      <View {...props} style={adjustedStyle} onLayout={this.onLayout} />
     );
   }
 }
@@ -179,7 +182,7 @@ class WindowGuard extends React.PureComponent {
 WindowGuard.requestWindowInsets = () => {
   RNWindowGuard.requestWindowInsets()
     .then(windowInsets => {
-      const {hasNotch, ...insets} = windowInsets;
+      const { hasNotch, ...insets } = windowInsets;
       WindowGuard.hasNotch = hasNotch;
       WindowGuard.insets = insets;
     });
